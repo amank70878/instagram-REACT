@@ -36,7 +36,7 @@ function App() {
   return (
     <BrowserRouter>
       <div className="app__body">
-        {loginUserEmail ? (
+        {!loginUserEmail ? (
           <Login />
         ) : (
           <>
