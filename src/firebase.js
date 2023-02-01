@@ -1,15 +1,16 @@
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "@firebase/firestore";
 import { getAuth, GoogleAuthProvider } from "firebase/auth";
+import { getStorage } from "firebase/storage";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyDmKXoteoI52aZ8F7EOhb_iuOJ_6ZMFFKw",
-  authDomain: "insta--copy.firebaseapp.com",
-  projectId: "insta--copy",
-  storageBucket: "insta--copy.appspot.com",
-  messagingSenderId: "1009145143469",
-  appId: "1:1009145143469:web:8495024550f4f072cbe624",
-  measurementId: "G-EEXZ1BSYYZ",
+  apiKey: "AIzaSyBv0rZVoMXCnBxQSL-PXjLrbfkgypUSQsM",
+  authDomain: "instagram-by-aman.firebaseapp.com",
+  projectId: "instagram-by-aman",
+  storageBucket: "instagram-by-aman.appspot.com",
+  messagingSenderId: "197543141863",
+  appId: "1:197543141863:web:5428a58424977405f79d42",
+  measurementId: "G-HFKVJPFFNB",
 };
 
 // Initialize Firebase
@@ -19,5 +20,6 @@ const db = getFirestore(app);
 // Initialize Firebase Authentication and get a reference to the service
 const auth = getAuth(app);
 const provider = new GoogleAuthProvider();
+const firebaseStorage = getStorage(app);
 
-export { db, auth, provider };
+export { db, auth, provider, firebaseStorage };
