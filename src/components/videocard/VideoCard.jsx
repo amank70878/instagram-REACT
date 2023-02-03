@@ -10,7 +10,6 @@ const VideoCard = ({
   reel__title,
   reel__src,
   reel__likes,
-  reel__comments,
   time,
 }) => {
   const playRef = useRef(null);
@@ -34,7 +33,7 @@ const VideoCard = ({
         ref={playRef}
       />
 
-      <VideoSidebar likes={reel__likes} comments={reel__comments} />
+      <VideoSidebar id={id} likes={reel__likes} />
       <VideoFooter
         user__profileImg={user__profileImg}
         user__name={user__name}

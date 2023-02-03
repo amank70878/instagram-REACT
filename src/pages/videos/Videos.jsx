@@ -24,7 +24,6 @@ const Videos = () => {
                 reel__title,
                 reel__src,
                 reel__likes,
-                reel__comments,
                 time,
               }) => (
                 <VideoCard
@@ -35,7 +34,6 @@ const Videos = () => {
                   reel__title={reel__title}
                   reel__src={reel__src}
                   reel__likes={reel__likes}
-                  reel__comments={reel__comments}
                   time={time}
                 />
               )

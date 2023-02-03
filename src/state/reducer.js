@@ -1,10 +1,12 @@
 import { createReducer } from "@reduxjs/toolkit";
 
 const initialState = {
-  users: [],
+  users: "",
   modalValue: false,
   pageLoader: "none",
   userModal: false,
+  swipeableDrawer: false,
+  commentDrawerId: null,
 };
 
 export const customReducer = createReducer(initialState, {
@@ -19,5 +21,11 @@ export const customReducer = createReducer(initialState, {
   },
   setUserModal: (state, action) => {
     state.userModal = action.payload;
+  },
+  setSwipeableDrawer: (state, action) => {
+    state.swipeableDrawer = action.payload;
+  },
+  setCommentDrawerId: (state, action) => {
+    state.commentDrawerId = action.payload;
   },
 });

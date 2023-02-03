@@ -171,7 +171,9 @@ const Home = () => {
             {loading ? (
               "loading"
             ) : emptyArticles ? (
-              <div className="itemNotFound">no videos are available</div>
+              <div className="itemNotFound text-center">
+                no reels are available
+              </div>
             ) : grid ? (
               fetchedReels.map((items, index) => {
                 return (

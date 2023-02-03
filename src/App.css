@@ -8,13 +8,25 @@ body {
   width: 100vw;
   height: 100vh;
   overflow: none;
-  background-color: rgb(37, 37, 37);
+  background: rgb(37, 37, 37);
   display: grid;
   place-items: center;
 }
 
 html {
   scroll-snap-type: y mandatory;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.itemNotFound {
+  width: 100%;
+  font-size: 1.12em;
+  text-transform: capitalize;
+  color: rgba(0, 0, 0, .7);
+
 }
 
 .app__body {

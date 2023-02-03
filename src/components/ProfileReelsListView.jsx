@@ -41,7 +41,6 @@ const ProfileReelsListView = ({
   const newTime = new Date(_seconds * 1000).toLocaleTimeString();
 
   const deletePostFunc = async (id) => {
-    console.log(id);
     let reply = window.confirm("are you sure you want to delete the post");
     if (reply) {
       const userDoc = doc(db, "reels", id);
@@ -86,7 +85,7 @@ const ProfileReelsListView = ({
                   setModalOpen(true);
                   setModalId(id);
                   setModalTitle(reel__title);
-                  setModalLocation("none");
+                  setModalLocation(reel__location);
                 }}
               >
                 <DriveFileRenameOutlineIcon />

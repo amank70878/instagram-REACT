@@ -11,12 +11,14 @@ export const ChatUsers = () => {
   }, []);
 
   return (
-    <ChatUser>
-      {allUser &&
-        allUser.map(({ user__profileImg }) => {
-          return <Avatar key={user__profileImg} src={user__profileImg} />;
-        })}
-    </ChatUser>
+    <>
+      <ChatUser>
+        {allUser &&
+          allUser.map(({ user__profileImg }) => {
+            return <Avatar key={user__profileImg} src={user__profileImg} />;
+          })}
+      </ChatUser>
+    </>
   );
 };
 

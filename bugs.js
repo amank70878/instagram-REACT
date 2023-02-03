@@ -15,6 +15,9 @@
 // location to the posts  👍
 // delete the post  👍
 // fetching reels but not user's
+// adding comments  👍
+// fetching comments  👍
+// change store anme
 // delete user
 
 // search for current logged user with local token
