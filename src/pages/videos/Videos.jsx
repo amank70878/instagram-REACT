@@ -1,25 +1,14 @@
 import React, { useState, useEffect } from "react";
 import VideoCard from "../../components/videocard/VideoCard";
 import "./videos.css";
-import { db } from "../../firebase";
-import { collection, getDocs } from "firebase/firestore";
+import { fetchReels } from "../../utils/fetchReels";
 
 const Videos = () => {
   const [videos, setVideos] = useState([]);
   const [loadingVideos, setLoadingVideos] = useState(true);
 
   useEffect(() => {
-    const fetchMessagesFunc = async () => {
-      const result = await getDocs(collection(db, `videos/`));
-      setVideos(
-        result.docs.map((doc) => ({
-          ...doc.data(),
-          id: doc.id,
-        }))
-      );
-      setLoadingVideos(false);
-    };
-    fetchMessagesFunc();
+    fetchReels(setVideos, setLoadingVideos);
   }, []);
 
   return (
@@ -29,23 +18,25 @@ const Videos = () => {
           ? "loading..."
           : videos.map(
               ({
-                user__name,
-                url,
-                song__name,
-                shares,
-                likes,
                 id,
-                comments,
+                user__name,
+                user__profileImg,
+                reel__title,
+                reel__src,
+                reel__likes,
+                reel__comments,
+                time,
               }) => (
                 <VideoCard
                   key={id}
-                  url={url}
-                  user__name={user__name}
-                  song__name={song__name}
-                  shares={shares}
-                  likes={likes}
                   id={id}
-                  comments={comments}
+                  user__name={user__name}
+                  user__profileImg={user__profileImg}
+                  reel__title={reel__title}
+                  reel__src={reel__src}
+                  reel__likes={reel__likes}
+                  reel__comments={reel__comments}
+                  time={time}
                 />
               )
             )}

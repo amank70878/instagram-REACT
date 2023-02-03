@@ -4,13 +4,13 @@ import { getAuth, GoogleAuthProvider } from "firebase/auth";
 import { getStorage } from "firebase/storage";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyBv0rZVoMXCnBxQSL-PXjLrbfkgypUSQsM",
-  authDomain: "instagram-by-aman.firebaseapp.com",
-  projectId: "instagram-by-aman",
-  storageBucket: "instagram-by-aman.appspot.com",
-  messagingSenderId: "197543141863",
-  appId: "1:197543141863:web:5428a58424977405f79d42",
-  measurementId: "G-HFKVJPFFNB",
+  apiKey: "AIzaSyDTPhMh2CD0sTopDelq2P1luq2EEasxamg",
+  authDomain: "insta-reels-by-aman.firebaseapp.com",
+  projectId: "insta-reels-by-aman",
+  storageBucket: "insta-reels-by-aman.appspot.com",
+  messagingSenderId: "724824444467",
+  appId: "1:724824444467:web:9ea58ba555f34319dfdd46",
+  measurementId: "G-KPNZEMF76Y",
 };
 
 // Initialize Firebase

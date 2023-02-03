@@ -1,11 +1,10 @@
 import React, { useState } from "react";
-import "./videosidebar.css";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import InsertCommentIcon from "@mui/icons-material/InsertComment";
-import { ShareRounded } from "@mui/icons-material";
+import "./videosidebar.css";
 
-const VideoSidebar = ({ likes, comments, shares }) => {
+const VideoSidebar = ({ likes, comments }) => {
   const [liked, setLiked] = useState(false);
 
   return (
@@ -27,10 +26,6 @@ const VideoSidebar = ({ likes, comments, shares }) => {
       <span className="videoSidebar__span">
         <InsertCommentIcon className="videoSidebar__svg" />
         {comments}
-      </span>
-      <span className="videoSidebar__span">
-        <ShareRounded />
-        {shares}
       </span>
     </section>
   );

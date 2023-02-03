@@ -25,6 +25,7 @@ const signInFunc = (navigate, dispatch) => {
             payload: false,
           });
           navigate(`/home/${data._tokenResponse.localId}`);
+          window.location.reload();
         } else {
           const messageCollectionRef = collection(db, `users`);
           await addDoc(messageCollectionRef, {
@@ -32,13 +33,18 @@ const signInFunc = (navigate, dispatch) => {
             user__name: data.user.displayName,
             user__email: data.user.email,
             user__profileImg: data.user.photoURL,
+            user__Bio1: "you can edit your bio",
+            user__Bio2: "this is just a demo  ",
+            user__Bio3: "make sure to edit it",
+            user__Bio4: "hello",
           });
           localStorage.setItem("insta-by-aman-id", data._tokenResponse.localId);
           dispatch({
             type: "setPageLoader",
             payload: false,
           });
-          navigate("/home");
+          navigate(`/home/${data._tokenResponse.localId}`);
+          window.location.reload();
         }
       };
       checkUserFunc();

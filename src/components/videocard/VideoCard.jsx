@@ -4,15 +4,17 @@ import VideoSidebar from "../videosidebar/VideoSidebar";
 import "./videocard.css";
 
 const VideoCard = ({
-  url,
+  id,
   user__name,
-  song__name,
-  shares,
-  likes,
-  comments,
+  user__profileImg,
+  reel__title,
+  reel__src,
+  reel__likes,
+  reel__comments,
+  time,
 }) => {
   const playRef = useRef(null);
-  const [videoPlaying, setVideoPlaying] = useState(false);
+  const [videoPlaying, setVideoPlaying] = useState(true);
 
   const toggleVideoPlayingFunc = () => {
     if (videoPlaying) {
@@ -27,13 +29,17 @@ const VideoCard = ({
     <div className="videoCard__section">
       <video
         className="videoCard__video"
-        src={url}
+        src={reel__src}
         onClick={toggleVideoPlayingFunc}
         ref={playRef}
       />
 
-      <VideoSidebar likes={likes} comments={comments} shares={shares} />
-      <VideoFooter song__name={song__name} user__name={user__name} />
+      <VideoSidebar likes={reel__likes} comments={reel__comments} />
+      <VideoFooter
+        user__profileImg={user__profileImg}
+        user__name={user__name}
+        reel__title={reel__title}
+      />
     </div>
   );
 };

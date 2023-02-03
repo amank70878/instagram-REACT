@@ -2,7 +2,7 @@ export const getVideosUrl = async (
   ref,
   firebaseStorage,
   getDownloadURL,
-  videoSrc,
+  reel,
   uploadBytes,
   uuidv4,
   dispatch
@@ -12,11 +12,11 @@ export const getVideosUrl = async (
     payload: "input",
   });
   const _name = uuidv4;
-  const _videoRef = ref(firebaseStorage, `videos/${_name}`);
-  await uploadBytes(_videoRef, videoSrc);
+  const _videoRef = ref(firebaseStorage, `reels/${_name}`);
+  await uploadBytes(_videoRef, reel);
 
   let _URL;
-  await getDownloadURL(ref(firebaseStorage, `videos/${_name}`))
+  await getDownloadURL(ref(firebaseStorage, `reels/${_name}`))
     .then((url) => {
       _URL = url;
     })

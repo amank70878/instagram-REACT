@@ -12,8 +12,8 @@ import Videos from "./pages/videos/Videos";
 import HomeIcon from "@mui/icons-material/Home";
 import { Instagram } from "@mui/icons-material";
 import Login from "./pages/login/Login";
-import Main from "./pages/main.jsx/Main";
-import PlayCircleIcon from "@mui/icons-material/PlayCircle";
+import Chat from "./pages/chat/Chat";
+import MessageIcon from "@mui/icons-material/Message";
 
 function App() {
   const loggedId = localStorage.getItem("insta-by-aman-id");
@@ -23,7 +23,7 @@ function App() {
         <Route path="/" exact element={<Videos />} />
         <Route path="login" exact element={<Login />} />
         <Route path="home/:profileid" exact element={<Home />} />
-        <Route path="main" exact element={<Main />} />
+        <Route path="chat" exact element={<Chat />} />
       </Routes>
       <Box>
         <Paper
@@ -36,11 +36,11 @@ function App() {
           elevation={3}
         >
           <BottomNavigation>
-            <Link to="main">
-              <BottomNavigationAction icon={<Instagram />} />
+            <Link to="chat">
+              <BottomNavigationAction icon={<MessageIcon />} />
             </Link>
             <Link to="/">
-              <BottomNavigationAction icon={<PlayCircleIcon />} />
+              <BottomNavigationAction icon={<Instagram />} />
             </Link>
             <Link to={`/home/${loggedId}`}>
               <BottomNavigationAction icon={<HomeIcon />} />

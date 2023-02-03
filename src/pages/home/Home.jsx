@@ -1,19 +1,35 @@
 import React, { useEffect, useState } from "react";
 import styled from "@emotion/styled";
 import SettingsIcon from "@mui/icons-material/Settings";
-import { Avatar, FormControl, MenuItem, Modal, Select } from "@mui/material";
+import {
+  Avatar,
+  BottomNavigation,
+  BottomNavigationAction,
+  Box,
+  Button,
+  IconButton,
+  Menu,
+  MenuItem,
+  Modal,
+  Paper,
+} from "@mui/material";
 import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchUserByLocalToken } from "../../utils/checkUserByToken";
 import PageLoader from "../pageloader/PageLoader";
 import Login from "../login/Login";
-import Posts from "../../components/Posts";
+import ProfileReelsListView from "../../components/ProfileReelsListView";
 import Sharepost from "../../components/Sharepost";
-import { fetchArticleOfUser } from "../../utils/FetchArticleOfUser";
+import { FetchReelsOfUser } from "../../utils/FetchReelsOfUser";
 import { query, collection, where, getDocs } from "firebase/firestore";
 import { db } from "../../firebase";
-import Loader from "../../components/Loader";
-import VideoPosts from "../../components/VideoPosts";
+import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
+import WindowIcon from "@mui/icons-material/Window";
+import ProfileReelsGridView from "../../components/ProfileReelsGridView";
+import PopupState, { bindTrigger, bindMenu } from "material-ui-popup-state";
+import { Bio } from "../../components/Bio";
+import { UpdateUser } from "../../components/UpdateUser";
+import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 
 const Home = () => {
   // to clear the token id
@@ -33,11 +49,14 @@ const Home = () => {
   const { profileid } = useParams();
   const dispatch = useDispatch();
   let [searchedUser, setSearchedUser] = useState([]);
+  const [reload, setReload] = useState(false);
+
   const navigate = useNavigate();
 
   //redux
   const { pageLoader } = useSelector((state) => state.linkedinReducer);
   const { users } = useSelector((state) => state.linkedinReducer);
+  const { userModal } = useSelector((state) => state.linkedinReducer);
 
   // search for current logged user with local token
   useEffect(() => {
@@ -48,7 +67,7 @@ const Home = () => {
     fetchUserByLocalToken(setSearchedUser, navigate, dispatch);
 
     // eslint-disable-next-line
-  }, [navigate]);
+  }, [navigate, reload]);
 
   // dispatching the current logged user
   useEffect(() => {
@@ -59,25 +78,25 @@ const Home = () => {
   }, [searchedUser, dispatch]);
 
   // fetching articles to displaying in the profile page
-  const [fetchedArticles, setFetchedArticles] = useState("");
-  const [Loading, setLoading] = useState(true);
-  const [articleType, setArticleType] = useState("image");
+  const [fetchedReels, setFetchedReels] = useState("");
   const [emptyArticles, setEmptyArticles] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [grid, setGrid] = useState(true);
 
+  // fetching reels
   useEffect(() => {
-    fetchArticleOfUser(
+    FetchReelsOfUser(
       query,
       collection,
       where,
       getDocs,
       db,
-      setFetchedArticles,
-      setLoading,
-      articleType,
+      setFetchedReels,
       setEmptyArticles,
-      profileid
+      profileid,
+      setLoading
     );
-  }, [articleType, setArticleType, pageLoader, profileid]);
+  }, [pageLoader, profileid]);
 
   return (
     <>
@@ -86,80 +105,104 @@ const Home = () => {
       ) : (
         <Wrap>
           <header>
-            <SettingsIcon />
+            <IconButton onClick={() => navigate(-1)}>
+              <ChevronLeftIcon />
+            </IconButton>
+
+            <PopupState variant="popover" popupId="demo-popup-menu">
+              {(popupState) => (
+                <React.Fragment>
+                  <Button {...bindTrigger(popupState)}>
+                    <SettingsIcon />
+                  </Button>
+                  <Menu {...bindMenu(popupState)}>
+                    <MenuItem
+                      onClick={() => {
+                        popupState.close();
+
+                        dispatch({
+                          type: "setUserModal",
+                          payload: true,
+                        });
+                      }}
+                    >
+                      Edit
+                    </MenuItem>
+                    <MenuItem
+                      onClick={() => {
+                        popupState.close();
+                        localStorage.removeItem("insta-by-aman-id");
+                        window.location.reload();
+                      }}
+                    >
+                      Logout
+                    </MenuItem>
+                  </Menu>
+                </React.Fragment>
+              )}
+            </PopupState>
           </header>
+
           <main>
             <Avatar src={users.profileImg} />
             <h4>{users.user__name}</h4>
           </main>
+
+          <Bio user={searchedUser[0]} />
+
           <Sharepost />
 
-          <div className="home__filter">
-            <FormControl sx={{ m: 1, minWidth: 120 }} variant="standard">
-              <Select
-                value={articleType}
-                onChange={(e) => setArticleType(e.target.value)}
-                label="Article Types"
-              >
-                <MenuItem value="video">Videos</MenuItem>
-                <MenuItem value="image">Images</MenuItem>
-              </Select>
-            </FormControl>
-          </div>
-          <section className="home__postsDiv">
-            {articleType === "image" &&
-              (Loading ? (
-                <Loader title="fetching post images....." />
-              ) : emptyArticles ? (
-                <div className="itemNotFound">no images are available</div>
-              ) : (
-                fetchedArticles.map((items, index) => {
-                  return (
-                    <div className="profile__cards" key={`${index}`}>
-                      <Posts
-                        id={`${items.id}`}
-                        user__name={`${items.user__name}`}
-                        user__email={`${items.user__email}`}
-                        user__profileImg={`${items.user__profileImg}`}
-                        post__title={`${items.post__title}`}
-                        post__videoSrc={`${items.post__src}`}
-                        post__mediaType={`${items.post__mediaType}`}
-                        post__likes={`${items.post__likes}`}
-                        post__comments={`${items.post__comments}`}
-                        post__reposts={`${items.post__reposts}`}
-                        time={`${items.time}`}
-                      />
-                    </div>
-                  );
-                })
-              ))}
+          <Box>
+            <Paper elevation={2}>
+              <BottomNavigation>
+                <BottomNavigationAction
+                  onClick={() => setGrid(true)}
+                  icon={<WindowIcon />}
+                />
+                <BottomNavigationAction
+                  onClick={() => setGrid(false)}
+                  icon={<FormatListBulletedIcon />}
+                />
+              </BottomNavigation>
+            </Paper>
+          </Box>
 
-            {articleType === "video" &&
-              (Loading ? (
-                <Loader title="fetching post videos ....." />
-              ) : emptyArticles ? (
-                <div className="itemNotFound">no videos are available</div>
-              ) : (
-                fetchedArticles.map((items, index) => {
-                  return (
-                    <div className="profile__cards" key={`${index}`}>
-                      <VideoPosts
-                        id={`${items.id}`}
-                        user__name={`${items.user__name}`}
-                        user__email={`${items.user__email}`}
-                        user__profileImg={`${items.user__profileImg}`}
-                        post__title={`${items.post__title}`}
-                        post__videoSrc={`${items.post__src}`}
-                        post__mediaType={`${items.post__mediaType}`}
-                        post__likes={`${items.post__likes}`}
-                        post__comments={`${items.post__comments}`}
-                        post__reposts={`${items.post__reposts}`}
-                        time={`${items.time}`}
-                      />
-                    </div>
-                  );
-                })
-              ))}
+          <section className="home__postsDiv">
+            {loading ? (
+              "loading"
+            ) : emptyArticles ? (
+              <div className="itemNotFound">no videos are available</div>
+            ) : grid ? (
+              fetchedReels.map((items, index) => {
+                return (
+                  <ProfileReelsGridView
+                    key={`${index}`}
+                    id={`${items.id}`}
+                    reel__src={`${items.reel__src}`}
+                    reel__likes={`${items.reel__likes}`}
+                    reel__comments={`${items.reel__comments}`}
+                  />
+                );
+              })
+            ) : (
+              fetchedReels.map((items, index) => {
+                return (
+                  <ProfileReelsListView
+                    key={`${index}`}
+                    id={`${items.id}`}
+                    user__name={`${items.user__name}`}
+                    user__email={`${items.user__email}`}
+                    user__profileImg={`${items.user__profileImg}`}
+                    reel__title={`${items.reel__title}`}
+                    reel__location={`${items.reel__location}`}
+                    reel__src={`${items.reel__src}`}
+                    reel__likes={`${items.reel__likes}`}
+                    reel__comments={`${items.reel__comments}`}
+                    time={`${items.time}`}
+                  />
+                );
+              })
+            )}
           </section>
         </Wrap>
       )}
@@ -181,6 +224,22 @@ const Home = () => {
           <PageLoader title="your post is uploading to our database......." />
         </div>
       </Modal>
+
+      <Modal
+        open={userModal}
+        onClose={() =>
+          dispatch({
+            type: "setUserModal",
+            payload: false,
+          })
+        }
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <div>
+          <UpdateUser userDetails={searchedUser[0]} setReload={setReload} />
+        </div>
+      </Modal>
     </>
   );
 };
@@ -196,14 +255,13 @@ const Wrap = styled.div`
   overflow-y: auto;
   padding: 10px 10px;
   position: relative;
-  padding-bottom: 20px;
 
   > header {
-    padding: 10px 0;
+    padding-bottom: 10px;
     border-bottom: 1px solid rgba(0, 0, 0, 0.1);
     display: flex;
     align-items: center;
-    justify-content: flex-end;
+    justify-content: space-between;
     > svg {
       font-size: 1.7em;
       color: rgba(0, 0, 0, 0.8);
@@ -231,10 +289,10 @@ const Wrap = styled.div`
   > .home__postsDiv {
     border-radius: 10px;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    flex-wrap: wrap;
     align-items: center;
-    justify-content: center;
     gap: 20px;
-    padding: 20px 10px;
+    margin-top: 20px;
   }
 `;

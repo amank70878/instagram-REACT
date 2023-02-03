@@ -1,18 +1,14 @@
 import React from "react";
-import "./videofooter.css";
-import { MusicNote } from "@mui/icons-material";
 import { Avatar } from "@mui/material";
+import "./videofooter.css";
 
-const VideoFooter = ({ song__name, user__name }) => {
+const VideoFooter = ({ user__profileImg, user__name, reel__title }) => {
   return (
     <section className="videofooter__section">
-      <div className="videoFooter__nameDiv">
-        <Avatar className="videoFooter__avatar" />
+      <Avatar className="videoFooter__avatar" src={user__profileImg} />
+      <div className="videoFooter__Details">
         <span className="videoFooter__name">{user__name}</span>
-      </div>
-      <div className="videoFooter__tickerDiv">
-        <MusicNote className="videoFooter__musicSvg" />
-        <span className="videoFooter__musicName">{song__name}</span>
+        <span className="videoFooter__title">{reel__title}</span>
       </div>
     </section>
   );

@@ -3,8 +3,8 @@ import { createReducer } from "@reduxjs/toolkit";
 const initialState = {
   users: [],
   modalValue: false,
-  drawer: false,
   pageLoader: "none",
+  userModal: false,
 };
 
 export const customReducer = createReducer(initialState, {
@@ -14,10 +14,10 @@ export const customReducer = createReducer(initialState, {
   setModalValue: (state, action) => {
     state.modalValue = action.payload;
   },
-  setDrawer: (state, action) => {
-    state.drawer = action.payload;
-  },
   setPageLoader: (state, action) => {
     state.pageLoader = action.payload;
+  },
+  setUserModal: (state, action) => {
+    state.userModal = action.payload;
   },
 });

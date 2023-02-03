@@ -25,7 +25,7 @@ const Sharepost = () => {
     <>
       <Wrap>
         <button onClick={(e) => handleModalStateFunc(true)}>
-          Start a post
+          + Add a Reel
         </button>
 
         <Modal
