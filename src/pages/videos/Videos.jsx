@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import VideoCard from "../../components/videocard/VideoCard";
+import VideoCard from "../../components/video/videocard/VideoCard";
 import "./videos.css";
 import { fetchReels } from "../../utils/fetchReels";
 

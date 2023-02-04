@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 const Sharepost = () => {
   const dispatch = useDispatch();
-  const { modalValue } = useSelector((state) => state.linkedinReducer);
+  const { modalValue } = useSelector((state) => state.instaReducer);
   const [open, setOpen] = useState(modalValue);
 
   const handleModalStateFunc = (type) => {

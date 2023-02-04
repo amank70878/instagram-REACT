@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import styled from "@emotion/styled";
 import { Avatar, Box, Button, IconButton, TextField } from "@mui/material";
-import VideoSidebar from "../components/videosidebar/VideoSidebar";
+import VideoSidebar from "../video/videosidebar/VideoSidebar";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { deleteDoc, doc, updateDoc } from "firebase/firestore";
-import { db } from "../firebase";
+import { db } from "../../firebase";
 import DriveFileRenameOutlineIcon from "@mui/icons-material/DriveFileRenameOutline";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
@@ -101,7 +101,7 @@ const ProfileReelsListView = ({
         </Reel>
         <Desc>{reel__title}</Desc>
 
-        <VideoSidebar likes={reel__likes} comments={reel__comments} />
+        <VideoSidebar id={id} likes={reel__likes} />
       </PostsSection>
 
       <Modal

@@ -21,7 +21,7 @@ function Drawer(props) {
     window !== undefined ? () => window().document.body : undefined;
 
   //     redux
-  const { swipeableDrawer } = useSelector((state) => state.linkedinReducer);
+  const { swipeableDrawer } = useSelector((state) => state.instaReducer);
   const dispatch = useDispatch();
 
   React.useEffect(() => {

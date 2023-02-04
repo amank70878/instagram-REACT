@@ -1,7 +1,7 @@
 import styled from "@emotion/styled";
 import { Avatar } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import { searchUser } from "../utils/searchUser";
+import { searchUser } from "../../utils/searchUser";
 
 export const ChatUsers = () => {
   const [allUser, setAllUser] = useState([]);

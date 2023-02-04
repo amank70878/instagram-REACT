@@ -3,7 +3,7 @@ import { customReducer } from "./reducer";
 
 const store = configureStore({
   reducer: {
-    linkedinReducer: customReducer,
+    instaReducer: customReducer,
   },
 });
 

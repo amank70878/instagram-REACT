@@ -13,23 +13,23 @@ import {
   Modal,
   Paper,
 } from "@mui/material";
+import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
+import WindowIcon from "@mui/icons-material/Window";
+import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
+import PopupState, { bindTrigger, bindMenu } from "material-ui-popup-state";
 import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import { query, collection, where, getDocs } from "firebase/firestore";
+import { db } from "../../firebase";
 import { fetchUserByLocalToken } from "../../utils/checkUserByToken";
 import PageLoader from "../pageloader/PageLoader";
 import Login from "../login/Login";
-import ProfileReelsListView from "../../components/ProfileReelsListView";
-import Sharepost from "../../components/Sharepost";
+import Sharepost from "../../components/home/Sharepost";
 import { FetchReelsOfUser } from "../../utils/FetchReelsOfUser";
-import { query, collection, where, getDocs } from "firebase/firestore";
-import { db } from "../../firebase";
-import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
-import WindowIcon from "@mui/icons-material/Window";
-import ProfileReelsGridView from "../../components/ProfileReelsGridView";
-import PopupState, { bindTrigger, bindMenu } from "material-ui-popup-state";
-import { Bio } from "../../components/Bio";
-import { UpdateUser } from "../../components/UpdateUser";
-import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
+import ProfileReelsListView from "../../components/home/ProfileReelsListView";
+import ProfileReelsGridView from "../../components/home/ProfileReelsGridView";
+import { Bio } from "../../components/home/Bio";
+import { UpdateUser } from "../../components/home/UpdateUser";
 
 const Home = () => {
   // to clear the token id
@@ -54,9 +54,10 @@ const Home = () => {
   const navigate = useNavigate();
 
   //redux
-  const { pageLoader } = useSelector((state) => state.linkedinReducer);
-  const { users } = useSelector((state) => state.linkedinReducer);
-  const { userModal } = useSelector((state) => state.linkedinReducer);
+  const { pageLoader } = useSelector((state) => state.instaReducer);
+  const { users } = useSelector((state) => state.instaReducer);
+  const { userModal } = useSelector((state) => state.instaReducer);
+  const { swipeableDrawer } = useSelector((state) => state.instaReducer);
 
   // search for current logged user with local token
   useEffect(() => {
@@ -96,7 +97,7 @@ const Home = () => {
       profileid,
       setLoading
     );
-  }, [pageLoader, profileid]);
+  }, [pageLoader, profileid, dispatch, swipeableDrawer]);
 
   return (
     <>

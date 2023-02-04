@@ -10,7 +10,7 @@ import {
 import CloseIcon from "@mui/icons-material/Close";
 import { useDispatch } from "react-redux";
 import { doc, updateDoc } from "firebase/firestore";
-import { db } from "../firebase";
+import { db } from "../../firebase";
 const style = {
   position: "absolute",
   top: "50%",

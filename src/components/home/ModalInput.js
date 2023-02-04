@@ -4,16 +4,16 @@ import { Avatar, IconButton } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import CloseIcon from "@mui/icons-material/Close";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import { firebaseStorage } from "../firebase";
+import { firebaseStorage } from "../../firebase";
 import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 import { v4 as uuidv4 } from "uuid";
-import { db } from "../firebase";
-import { getVideosUrl } from "../utils/getVideosUrl";
-import { addReels } from "../utils/addReels";
+import { db } from "../../firebase";
+import { getVideosUrl } from "../../utils/getVideosUrl";
+import { addReels } from "../../utils/addReels";
 
 const ModalInput = () => {
   // redux here
-  const { users: user } = useSelector((state) => state.linkedinReducer);
+  const { users: user } = useSelector((state) => state.instaReducer);
   const dispatch = useDispatch();
 
   // inputs variables

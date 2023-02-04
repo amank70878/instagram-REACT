@@ -2,13 +2,13 @@ import styled from "@emotion/styled";
 import { Modal } from "@mui/material";
 import React from "react";
 import { useSelector } from "react-redux";
-import { ChatUsers } from "../../components/ChatUsers";
+import { ChatUsers } from "../../components/chat/ChatUsers";
 import Login from "../login/Login";
 import PageLoader from "../pageloader/PageLoader";
 
 const Chat = () => {
-  const { pageLoader } = useSelector((state) => state.linkedinReducer);
-  const { users } = useSelector((state) => state.linkedinReducer);
+  const { pageLoader } = useSelector((state) => state.instaReducer);
+  const { users } = useSelector((state) => state.instaReducer);
 
   return (
     <>

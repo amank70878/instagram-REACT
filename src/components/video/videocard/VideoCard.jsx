@@ -33,7 +33,7 @@ const VideoCard = ({
         ref={playRef}
       />
 
-      <VideoSidebar id={id} likes={reel__likes} />
+      <VideoSidebar id={id} />
       <VideoFooter
         user__profileImg={user__profileImg}
         user__name={user__name}

@@ -7,6 +7,7 @@ const initialState = {
   userModal: false,
   swipeableDrawer: false,
   commentDrawerId: null,
+  reload: true,
 };
 
 export const customReducer = createReducer(initialState, {
@@ -27,5 +28,8 @@ export const customReducer = createReducer(initialState, {
   },
   setCommentDrawerId: (state, action) => {
     state.commentDrawerId = action.payload;
+  },
+  setReload: (state, action) => {
+    state.reload = action.payload;
   },
 });

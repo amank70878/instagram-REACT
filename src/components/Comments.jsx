@@ -8,11 +8,11 @@ import { useEffect } from "react";
 import { fetchCommentsOfReel } from "../utils/fetchCommentsOfReel";
 
 export const Comments = () => {
-  const { pageLoader } = useSelector((state) => state.linkedinReducer);
-  const { commentDrawerId: id } = useSelector((state) => state.linkedinReducer);
+  const { pageLoader } = useSelector((state) => state.instaReducer);
+  const { commentDrawerId: id } = useSelector((state) => state.instaReducer);
 
   // adding comments
-  const { users } = useSelector((state) => state.linkedinReducer);
+  const { users } = useSelector((state) => state.instaReducer);
   const [inputComment, setInputComment] = useState("");
   const [reload, setReload] = useState(false);
 
