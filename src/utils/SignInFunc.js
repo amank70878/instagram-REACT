@@ -33,10 +33,10 @@ const signInFunc = (navigate, dispatch) => {
             user__name: data.user.displayName,
             user__email: data.user.email,
             user__profileImg: data.user.photoURL,
-            user__Bio1: "you can edit your bio",
-            user__Bio2: "this is just a demo  ",
-            user__Bio3: "make sure to edit it",
-            user__Bio4: "hello",
+            user__Bio1: "You can Edit your Profile",
+            user__Bio2: "You can Post a Reel",
+            user__Bio3: "You can Like,Comment,Edit & Delete your posts",
+            user__Bio4: "You can Message other persons",
           });
           localStorage.setItem("insta-by-aman-id", data._tokenResponse.localId);
           dispatch({

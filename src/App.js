@@ -4,8 +4,8 @@ import {
   Box,
   Paper,
 } from "@mui/material";
-import React from "react";
-import { Route, Routes, Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Route, Routes, useNavigate } from "react-router-dom";
 import "./App.css";
 import Home from "./pages/home/Home";
 import Videos from "./pages/videos/Videos";
@@ -14,9 +14,33 @@ import { Instagram } from "@mui/icons-material";
 import Login from "./pages/login/Login";
 import Chat from "./pages/chat/Chat";
 import MessageIcon from "@mui/icons-material/Message";
+import { ChatBox } from "./pages/chat/ChatBox";
+import { useDispatch } from "react-redux";
+import { fetchUserByLocalToken } from "./utils/checkUserByToken";
 
 function App() {
-  const loggedId = localStorage.getItem("insta-by-aman-id");
+  const logged__id = localStorage.getItem("insta-by-aman-id");
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const [searchedUser, setSearchedUser] = useState([]);
+
+  // search for current logged user with local token
+  useEffect(() => {
+    dispatch({
+      type: "setPageLoader",
+      payload: true,
+    });
+    fetchUserByLocalToken(setSearchedUser, navigate, dispatch);
+  }, [navigate]);
+
+  // dispatching the current logged user
+  useEffect(() => {
+    dispatch({
+      type: "setUser",
+      payload: searchedUser[0],
+    });
+  }, [searchedUser, navigate]);
+
   return (
     <div className="app__body">
       <Routes>
@@ -24,6 +48,7 @@ function App() {
         <Route path="login" exact element={<Login />} />
         <Route path="home/:profileid" exact element={<Home />} />
         <Route path="chat" exact element={<Chat />} />
+        <Route path="chats/:chatprofileid" exact element={<ChatBox />} />
       </Routes>
       <Box>
         <Paper
@@ -36,15 +61,20 @@ function App() {
           elevation={3}
         >
           <BottomNavigation>
-            <Link to="chat">
-              <BottomNavigationAction icon={<MessageIcon />} />
-            </Link>
-            <Link to="/">
-              <BottomNavigationAction icon={<Instagram />} />
-            </Link>
-            <Link to={`/home/${loggedId}`}>
-              <BottomNavigationAction icon={<HomeIcon />} />
-            </Link>
+            <BottomNavigationAction
+              icon={<MessageIcon />}
+              onClick={() => navigate("chat")}
+            />
+
+            <BottomNavigationAction
+              icon={<Instagram />}
+              onClick={() => navigate("/")}
+            />
+
+            <BottomNavigationAction
+              icon={<HomeIcon />}
+              onClick={() => navigate(`/home/${logged__id}`)}
+            />
           </BottomNavigation>
         </Paper>
       </Box>

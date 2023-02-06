@@ -46,13 +46,14 @@ const Sharepost = () => {
 export default Sharepost;
 
 const Wrap = styled.div`
-  margin: 20px 0;
+  margin: 20px auto;
   position: relative;
+  max-width: 94%;
+
   > button {
     padding: 12px 30px;
     width: 100%;
     background: #ffffff;
-    color: rgb(255, 255, 255);
     color: #000;
     font-size: 0.85em;
     letter-spacing: 2px;

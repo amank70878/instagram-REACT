@@ -10,6 +10,7 @@ import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import { Stack } from "@mui/system";
 import CloseIcon from "@mui/icons-material/Close";
+import { useDispatch, useSelector } from "react-redux";
 
 const style = {
   position: "absolute",
@@ -40,14 +41,18 @@ const ProfileReelsListView = ({
   const newDate = new Date(_seconds * 1000).toLocaleDateString();
   const newTime = new Date(_seconds * 1000).toLocaleTimeString();
 
+  const { reloadRedux } = useSelector((state) => state.instaReducer);
+  const dispatch = useDispatch();
+
   const deletePostFunc = async (id) => {
     let reply = window.confirm("are you sure you want to delete the post");
     if (reply) {
       const userDoc = doc(db, "reels", id);
       await deleteDoc(userDoc);
-      // props.showAlert("Note Deleted Successfully", true);
-    } else {
-      // props.showAlert("Note not Deleted", true);
+      dispatch({
+        type: "setReloadRedux",
+        payload: !reloadRedux,
+      });
     }
   };
 
@@ -259,10 +264,12 @@ const Desc = styled.div`
 `;
 const Reel = styled.div`
   width: 100%;
-  height: 100%;
+  min-height: 100%;
+  background: #000000;
   > video {
     width: 100%;
-    background: #ffffff;
+    background: #000000;
+    min-height: 530px;
     height: 100%;
     object-fit: cover;
   }

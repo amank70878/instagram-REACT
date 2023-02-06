@@ -1,14 +1,28 @@
 import styled from "@emotion/styled";
-import { Modal } from "@mui/material";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import { ChatCards } from "../../components/chat/ChatCards";
 import { ChatUsers } from "../../components/chat/ChatUsers";
+import { SearchForAllChatsOfUser } from "../../utils/SearchForAllChatsOfUser";
 import Login from "../login/Login";
-import PageLoader from "../pageloader/PageLoader";
 
 const Chat = () => {
-  const { pageLoader } = useSelector((state) => state.instaReducer);
   const { users } = useSelector((state) => state.instaReducer);
+  const [fetchedChats, setFetchedChats] = useState(null);
+  const [isEmpty, setIsEmpty] = useState(false);
+  const [chatsLoading, setChatsLoading] = useState(true);
+
+  // search for chats
+  useEffect(() => {
+    if (users) {
+      SearchForAllChatsOfUser(
+        users,
+        setFetchedChats,
+        setIsEmpty,
+        setChatsLoading
+      );
+    }
+  }, [users]);
 
   return (
     <>
@@ -18,17 +32,52 @@ const Chat = () => {
         <Chats>
           <h4>select users to chat</h4>
           <ChatUsers />
+
+          <hr />
+
+          <h4 style={{ marginTop: "20px" }}>Your Chats</h4>
+
+          {chatsLoading ? (
+            <div
+              className="itemNotFound text-center"
+              style={{ marginTop: "200px" }}
+            >
+              Fetching Chats....
+            </div>
+          ) : isEmpty ? (
+            <div
+              className="itemNotFound text-center"
+              style={{ marginTop: "200px" }}
+            >
+              No Chat Found
+            </div>
+          ) : (
+            fetchedChats &&
+            fetchedChats.map(
+              ({
+                user__profileImg,
+                user__name,
+                id,
+                user__ref,
+                timestamp,
+                comment,
+              }) => {
+                return (
+                  <ChatCards
+                    key={id}
+                    id={id}
+                    user__name={user__name}
+                    user__profileImg={user__profileImg}
+                    user__ref={user__ref}
+                    time={timestamp}
+                    comment={comment}
+                  />
+                );
+              }
+            )
+          )}
         </Chats>
       )}
-      <Modal
-        open={pageLoader === "app" ? true : false}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-        <div>
-          <PageLoader title="your post is uploading to our database......." />
-        </div>
-      </Modal>
     </>
   );
 };
@@ -40,18 +89,17 @@ const Chats = styled.section`
   height: 100%;
   background: #fff;
   color: #000;
-  padding: 10px 0px;
+  padding: 10px;
   position: relative;
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: auto;
 
   > h4 {
-    font-size: 1.2em;
+    font-size: 1em;
     font-weight: 600;
     color: rgba(0, 0, 0, 0.8);
-    padding: 10px 10px 0 10px;
     text-transform: capitalize;
-
-    background-image: linear-gradient(
+    /* background-image: linear-gradient(
       to left,
       #405de6,
       #854fd5,
@@ -67,6 +115,6 @@ const Chats = styled.section`
       #ffdc80
     );
     -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+    -webkit-text-fill-color: transparent; */
   }
 `;

@@ -1,13 +1,13 @@
 import { createReducer } from "@reduxjs/toolkit";
 
 const initialState = {
-  users: "",
+  users: null,
   modalValue: false,
   pageLoader: "none",
   userModal: false,
   swipeableDrawer: false,
   commentDrawerId: null,
-  reload: true,
+  reloadRedux: true,
 };
 
 export const customReducer = createReducer(initialState, {
@@ -29,7 +29,7 @@ export const customReducer = createReducer(initialState, {
   setCommentDrawerId: (state, action) => {
     state.commentDrawerId = action.payload;
   },
-  setReload: (state, action) => {
-    state.reload = action.payload;
+  setReloadRedux: (state, action) => {
+    state.reloadRedux = action.payload;
   },
 });

@@ -11,6 +11,8 @@ const VideoCard = ({
   reel__src,
   reel__likes,
   time,
+  reel__userLoginId,
+  reel__location,
 }) => {
   const playRef = useRef(null);
   const [videoPlaying, setVideoPlaying] = useState(true);
@@ -35,9 +37,11 @@ const VideoCard = ({
 
       <VideoSidebar id={id} />
       <VideoFooter
+        reel__userLoginId={reel__userLoginId}
         user__profileImg={user__profileImg}
         user__name={user__name}
         reel__title={reel__title}
+        reel__location={reel__location}
       />
     </div>
   );

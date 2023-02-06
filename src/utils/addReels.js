@@ -7,9 +7,11 @@ export const addReels = async (
   _videoUrl,
   title,
   location,
-  dispatch
+  dispatch,
+  reloadRedux
 ) => {
   const messageCollectionRef = collection(db, `reels`);
+  console.log(reloadRedux);
   await addDoc(messageCollectionRef, {
     reel__userLoginId: user.user__loginId,
     user__name: user.user__name,
@@ -25,5 +27,9 @@ export const addReels = async (
   dispatch({
     type: "setPageLoader",
     payload: false,
+  });
+  dispatch({
+    type: "setReloadRedux",
+    payload: !reloadRedux,
   });
 };

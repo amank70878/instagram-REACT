@@ -1,3 +1,5 @@
+// import { orderBy } from "firebase/firestore";
+
 export const FetchReelsOfUser = async (
   query,
   collection,
@@ -14,6 +16,7 @@ export const FetchReelsOfUser = async (
   const q = query(
     msgDataCollectionRef,
     where("reel__userLoginId", "==", `${profileid}`)
+    // orderBy("timestamp", "desc")
   );
   const docSnap = await getDocs(q);
   if (docSnap._snapshot.docs.size > 0) {

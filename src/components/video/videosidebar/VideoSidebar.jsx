@@ -13,9 +13,9 @@ import { addlike } from "../../../utils/addlike";
 import { useNavigate } from "react-router-dom";
 
 const VideoSidebar = ({ id }) => {
+  // redux
   const { swipeableDrawer } = useSelector((state) => state.instaReducer);
   const { users } = useSelector((state) => state.instaReducer);
-  // const { reload } = useSelector((state) => state.instaReducer);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -34,9 +34,9 @@ const VideoSidebar = ({ id }) => {
       }
     };
     fetchingTotalMessages();
-  }, [id, dispatch, swipeableDrawer, reload, setReload]);
+  }, [id, dispatch, swipeableDrawer]);
 
-  // likes
+  // fetching likes
   const [totalLikes, setTotalLikes] = useState("");
   const [reload, setReload] = useState(true);
   const [isLiked, setIsLiked] = useState(false);
@@ -52,17 +52,18 @@ const VideoSidebar = ({ id }) => {
     setTotalLikes(docSnap._snapshot.docs.size);
 
     // fetch current user like
-    const docSnap1 = await getDocs(
-      query(
-        collection(db, `reels/${id}/likes`),
-        where("likedBy__email", "==", `${users.user__email}`)
-      )
-    );
-    if (docSnap1._snapshot.docs.size > 0) {
-      console.log(docSnap1._snapshot.docs.size);
-      setIsLiked(true);
-    } else {
-      setIsLiked(false);
+    if (users) {
+      const docSnap1 = await getDocs(
+        query(
+          collection(db, `reels/${id}/likes`),
+          where("likedBy__email", "==", `${users.user__email}`)
+        )
+      );
+      if (docSnap1._snapshot.docs.size > 0) {
+        setIsLiked(true);
+      } else {
+        setIsLiked(false);
+      }
     }
   };
 

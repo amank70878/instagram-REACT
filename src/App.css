@@ -64,7 +64,7 @@ a {
 
   .app__body {
     width: 100vw;
-    height: 93.5vh;
+    min-height: 94vh;
     border-radius: 0px;
   }
 

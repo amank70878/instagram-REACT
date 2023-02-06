@@ -14,6 +14,7 @@ import { addReels } from "../../utils/addReels";
 const ModalInput = () => {
   // redux here
   const { users: user } = useSelector((state) => state.instaReducer);
+  const { reloadRedux } = useSelector((state) => state.instaReducer);
   const dispatch = useDispatch();
 
   // inputs variables
@@ -48,7 +49,8 @@ const ModalInput = () => {
       _videoUrl,
       title,
       location,
-      dispatch
+      dispatch,
+      reloadRedux
     );
   };
 
@@ -107,7 +109,7 @@ const ModalInput = () => {
               >
                 <path d="M19 4H5a3 3 0 00-3 3v10a3 3 0 003 3h14a3 3 0 003-3V7a3 3 0 00-3-3zm-9 12V8l6 4z"></path>
               </svg>
-              <p> Select a Video</p>
+              <p> Select a Reel</p>
             </label>
 
             {reel && (

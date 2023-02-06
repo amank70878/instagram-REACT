@@ -21,7 +21,6 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { query, collection, where, getDocs } from "firebase/firestore";
 import { db } from "../../firebase";
-import { fetchUserByLocalToken } from "../../utils/checkUserByToken";
 import PageLoader from "../pageloader/PageLoader";
 import Login from "../login/Login";
 import Sharepost from "../../components/home/Sharepost";
@@ -30,55 +29,29 @@ import ProfileReelsListView from "../../components/home/ProfileReelsListView";
 import ProfileReelsGridView from "../../components/home/ProfileReelsGridView";
 import { Bio } from "../../components/home/Bio";
 import { UpdateUser } from "../../components/home/UpdateUser";
+import { fetchUserById } from "../../utils/fetchUserById";
 
 const Home = () => {
-  // to clear the token id
-  var hours = 2;
-  var now = new Date().getTime();
-  var setupTime = localStorage.getItem("instaLoginTime");
-  if (setupTime == null) {
-    localStorage.setItem("instaLoginTime", now);
-  } else {
-    if (now - setupTime > hours * 60 * 60 * 1000) {
-      localStorage.clear();
-      localStorage.setItem("instaLoginTime", now);
-    }
-  }
-
-  // variables
-  const { profileid } = useParams();
-  const dispatch = useDispatch();
-  let [searchedUser, setSearchedUser] = useState([]);
-  const [reload, setReload] = useState(false);
-
-  const navigate = useNavigate();
-
   //redux
   const { pageLoader } = useSelector((state) => state.instaReducer);
   const { users } = useSelector((state) => state.instaReducer);
   const { userModal } = useSelector((state) => state.instaReducer);
   const { swipeableDrawer } = useSelector((state) => state.instaReducer);
+  const { reloadRedux } = useSelector((state) => state.instaReducer);
 
-  // search for current logged user with local token
+  // variables
+  const { profileid } = useParams();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const [homeUser, setHomeUser] = useState([]);
+  const [reload, setReload] = useState(false);
+
+  // search for current logged user with profileid
   useEffect(() => {
-    dispatch({
-      type: "setPageLoader",
-      payload: true,
-    });
-    fetchUserByLocalToken(setSearchedUser, navigate, dispatch);
+    fetchUserById(setHomeUser, profileid);
+  }, [profileid, reloadRedux]);
 
-    // eslint-disable-next-line
-  }, [navigate, reload]);
-
-  // dispatching the current logged user
-  useEffect(() => {
-    dispatch({
-      type: "setUser",
-      payload: searchedUser[0],
-    });
-  }, [searchedUser, dispatch]);
-
-  // fetching articles to displaying in the profile page
+  // fetching reels to displaying in the profile page
   const [fetchedReels, setFetchedReels] = useState("");
   const [emptyArticles, setEmptyArticles] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -97,7 +70,17 @@ const Home = () => {
       profileid,
       setLoading
     );
-  }, [pageLoader, profileid, dispatch, swipeableDrawer]);
+  }, [
+    pageLoader,
+    profileid,
+    dispatch,
+    navigate,
+    swipeableDrawer,
+    reload,
+    reloadRedux,
+  ]);
+
+  if (!homeUser.length) return "";
 
   return (
     <>
@@ -109,51 +92,79 @@ const Home = () => {
             <IconButton onClick={() => navigate(-1)}>
               <ChevronLeftIcon />
             </IconButton>
+            {profileid === localStorage.getItem("insta-by-aman-id") ? (
+              <PopupState variant="popover" popupId="demo-popup-menu">
+                {(popupState) => (
+                  <React.Fragment>
+                    <Button {...bindTrigger(popupState)}>
+                      <SettingsIcon />
+                    </Button>
+                    <Menu {...bindMenu(popupState)}>
+                      <MenuItem
+                        onClick={() => {
+                          popupState.close();
 
-            <PopupState variant="popover" popupId="demo-popup-menu">
-              {(popupState) => (
-                <React.Fragment>
-                  <Button {...bindTrigger(popupState)}>
-                    <SettingsIcon />
-                  </Button>
-                  <Menu {...bindMenu(popupState)}>
-                    <MenuItem
-                      onClick={() => {
-                        popupState.close();
-
-                        dispatch({
-                          type: "setUserModal",
-                          payload: true,
-                        });
-                      }}
-                    >
-                      Edit
-                    </MenuItem>
-                    <MenuItem
-                      onClick={() => {
-                        popupState.close();
-                        localStorage.removeItem("insta-by-aman-id");
-                        window.location.reload();
-                      }}
-                    >
-                      Logout
-                    </MenuItem>
-                  </Menu>
-                </React.Fragment>
-              )}
-            </PopupState>
+                          dispatch({
+                            type: "setUserModal",
+                            payload: true,
+                          });
+                        }}
+                      >
+                        Edit
+                      </MenuItem>
+                      <MenuItem
+                        onClick={() => {
+                          popupState.close();
+                          localStorage.removeItem("insta-by-aman-id");
+                          window.location.reload();
+                        }}
+                      >
+                        Logout
+                      </MenuItem>
+                    </Menu>
+                  </React.Fragment>
+                )}
+              </PopupState>
+            ) : (
+              <PopupState variant="popover" popupId="demo-popup-menu">
+                {(popupState) => (
+                  <React.Fragment>
+                    <Button {...bindTrigger(popupState)}>
+                      <SettingsIcon />
+                    </Button>
+                    <Menu {...bindMenu(popupState)}>
+                      <MenuItem
+                        onClick={() => {
+                          popupState.close();
+                          navigate(`/chats/${profileid}`);
+                        }}
+                      >
+                        message
+                      </MenuItem>
+                    </Menu>
+                  </React.Fragment>
+                )}
+              </PopupState>
+            )}
           </header>
 
-          <main>
-            <Avatar src={users.profileImg} />
-            <h4>{users.user__name}</h4>
-          </main>
+          {homeUser && (
+            <>
+              <main>
+                <Avatar src={homeUser[0].user__profileImg} />
+                <h4>{homeUser[0].user__name}</h4>
+              </main>
 
-          <Bio user={searchedUser[0]} />
+              <Bio user={homeUser[0]} />
+              <div></div>
+            </>
+          )}
 
-          <Sharepost />
+          {profileid === localStorage.getItem("insta-by-aman-id") && (
+            <Sharepost />
+          )}
 
-          <Box>
+          <Box marginTop={"30px"}>
             <Paper elevation={2}>
               <BottomNavigation>
                 <BottomNavigationAction
@@ -170,7 +181,7 @@ const Home = () => {
 
           <section className="home__postsDiv">
             {loading ? (
-              "loading"
+              <div className="itemNotFound text-center">Fetching reels....</div>
             ) : emptyArticles ? (
               <div className="itemNotFound text-center">
                 no reels are available
@@ -240,7 +251,7 @@ const Home = () => {
         aria-describedby="modal-modal-description"
       >
         <div>
-          <UpdateUser userDetails={searchedUser[0]} setReload={setReload} />
+          <UpdateUser user__details={users} set__reload={setReload} />
         </div>
       </Modal>
     </>
@@ -256,10 +267,11 @@ const Wrap = styled.div`
   color: #000;
   overflow-x: hidden;
   overflow-y: auto;
-  padding: 10px 10px;
+  padding: 10px 0px;
   position: relative;
 
   > header {
+    padding: 0 10px;
     padding-bottom: 10px;
     border-bottom: 1px solid rgba(0, 0, 0, 0.1);
     display: flex;
@@ -272,6 +284,7 @@ const Wrap = styled.div`
   }
 
   > main {
+    padding: 0 10px;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -295,7 +308,12 @@ const Wrap = styled.div`
     flex-direction: row;
     flex-wrap: wrap;
     align-items: center;
-    gap: 20px;
+    gap: 10px;
+    padding: 0 5px;
     margin-top: 20px;
+
+    @media screen and (max-width: 500px) {
+      justify-content: center;
+    }
   }
 `;

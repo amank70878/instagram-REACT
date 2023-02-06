@@ -33,12 +33,13 @@ export const Bio = ({ user }) => {
 };
 
 const BioSection = styled.section`
-  margin-top: 10px;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   justify-content: center;
-  max-width: 100%;
+  max-width: 94%;
+  margin: 0 auto;
+  margin-top: 10px;
 
   > li {
     font-size: 1.12em;

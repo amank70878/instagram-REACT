@@ -8,7 +8,7 @@ import {
   Typography,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { doc, updateDoc } from "firebase/firestore";
 import { db } from "../../firebase";
 const style = {
@@ -23,7 +23,8 @@ const style = {
   p: 1,
 };
 
-export const UpdateUser = ({ userDetails, setReload }) => {
+export const UpdateUser = ({ user__details, set__reload }) => {
+  const { reloadRedux } = useSelector((state) => state.instaReducer);
   const dispatch = useDispatch();
 
   const [modalName, setModalName] = useState("");
@@ -33,15 +34,15 @@ export const UpdateUser = ({ userDetails, setReload }) => {
   const [modalBio4, setModalBio4] = useState("");
 
   useEffect(() => {
-    setModalName(userDetails.user__name);
-    setModalBio1(userDetails.user__Bio1);
-    setModalBio2(userDetails.user__Bio2);
-    setModalBio3(userDetails.user__Bio3);
-    setModalBio4(userDetails.user__Bio4);
-  }, []);
+    setModalName(user__details.user__name);
+    setModalBio1(user__details.user__Bio1);
+    setModalBio2(user__details.user__Bio2);
+    setModalBio3(user__details.user__Bio3);
+    setModalBio4(user__details.user__Bio4);
+  }, [reloadRedux]);
 
   const updatePostFunc = async () => {
-    const noteDoc = doc(db, "users", userDetails.id);
+    const noteDoc = doc(db, "users", user__details.id);
     const newFields = {
       user__name: modalName,
       user__Bio1: modalBio1,
@@ -50,7 +51,7 @@ export const UpdateUser = ({ userDetails, setReload }) => {
       user__Bio4: modalBio4,
     };
     await updateDoc(noteDoc, newFields);
-    setReload(true);
+    set__reload(true);
   };
 
   return (
