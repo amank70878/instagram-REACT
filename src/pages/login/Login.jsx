@@ -30,9 +30,12 @@ export default Login;
 
 const LOGINWRAP = styled.section`
   width: 400px;
-  height: 800px !important;
+  height: 100% !important;
   background-color: #ffffff;
   overflow: hidden;
+  @media screen and (max-width: 500px) {
+    height: calc(100vh - 56px);
+  }
 
   display: flex;
   align-items: center;

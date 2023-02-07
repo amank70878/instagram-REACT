@@ -64,8 +64,9 @@ a {
 
   .app__body {
     width: 100vw;
-    min-height: 94vh;
+    height: calc(100vh - 56px);
     border-radius: 0px;
+    overflow: hidden;
   }
 
 }

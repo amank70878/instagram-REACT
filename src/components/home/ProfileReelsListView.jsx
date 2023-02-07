@@ -269,7 +269,7 @@ const Reel = styled.div`
   > video {
     width: 100%;
     background: #000000;
-    min-height: 530px;
+    min-height: 550px;
     height: 100%;
     object-fit: cover;
   }
